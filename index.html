@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ultim8 AI</title>
+<style>
+:root{
+  --bg:#070912;--panel:#0d1120;--panel2:#111728;--line:#222a40;
+  --text:#f5f7ff;--muted:#98a2bc;--accent:#8b5cf6;--accent2:#22d3ee;
+  --good:#34d399;--warn:#fbbf24;--danger:#fb7185;--shadow:0 20px 60px rgba(0,0,0,.35)
+}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+body:before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 15% 10%,rgba(139,92,246,.18),transparent 32%),radial-gradient(circle at 85% 20%,rgba(34,211,238,.12),transparent 28%),radial-gradient(circle at 60% 90%,rgba(236,72,153,.08),transparent 30%)}
+body:after{content:"";position:fixed;inset:0;z-index:-1;opacity:.14;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(to bottom,black,transparent)}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}.sidebar{width:260px;flex:none;border-right:1px solid var(--line);background:rgba(7,9,18,.78);backdrop-filter:blur(22px);padding:18px 12px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:11px;padding:8px 10px 20px}.logo{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-weight:900;box-shadow:0 10px 30px rgba(139,92,246,.3)}.brand b{font-size:17px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.section-title{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:#68738d;padding:14px 11px 7px}
+.nav{display:flex;flex-direction:column;gap:4px}.nav button{border:0;background:transparent;color:#aeb7cc;text-align:left;padding:11px 12px;border-radius:11px;display:flex;align-items:center;gap:11px;transition:.18s}.nav button:hover{background:#12182a;color:white}.nav button.active{background:linear-gradient(90deg,rgba(139,92,246,.2),rgba(34,211,238,.06));color:white;box-shadow:inset 3px 0 var(--accent)}.nav .ico{width:21px;text-align:center}
+.sidebar-bottom{margin-top:18px;padding:12px;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:15px}.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.dot{width:8px;height:8px;border-radius:50%;background:var(--warn);box-shadow:0 0 12px currentColor}.dot.online{background:var(--good)}
+.main{min-width:0;flex:1}.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;background:rgba(7,9,18,.58);backdrop-filter:blur(20px);position:sticky;top:0;z-index:20}.top-left{display:flex;align-items:center;gap:12px}.hamb{display:none}.page-title{font-size:15px;font-weight:750}.mode{border:1px solid var(--line);background:#0e1424;color:#dce2f1;border-radius:999px;padding:8px 12px;font-size:12px}.top-actions{display:flex;gap:8px}.icon-btn,.primary,.secondary,.danger{border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:#101629;color:#e9edfa}.primary{border-color:transparent;background:linear-gradient(135deg,var(--accent),#6366f1);color:white;font-weight:700}.secondary:hover,.icon-btn:hover{background:#171e32}.danger{color:#fecdd3;border-color:#542638}
+.content{padding:30px;max-width:1500px;margin:auto}.page{display:none;animation:fade .25s ease}.page.active{display:block}@keyframes fade{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+.hero{padding:34px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(34,211,238,.05) 45%,rgba(255,255,255,.02));box-shadow:var(--shadow);overflow:hidden;position:relative}.hero h1{font-size:clamp(32px,5vw,62px);line-height:1;margin:0 0 14px;letter-spacing:-.045em}.gradient{background:linear-gradient(90deg,#fff,#c4b5fd,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{max-width:700px;color:var(--muted);font-size:15px;line-height:1.7}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.grid{display:grid;gap:14px}.cards{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:18px}.card{border:1px solid var(--line);background:rgba(13,17,32,.8);border-radius:17px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.15)}.card.click{cursor:pointer;transition:.18s}.card.click:hover{transform:translateY(-2px);border-color:#39435f}.card h3{margin:8px 0 6px;font-size:15px}.card p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}.bigicon{font-size:25px}
+.workspace{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,.7fr);gap:16px}.panel{border:1px solid var(--line);background:rgba(13,17,32,.82);border-radius:18px;padding:18px}.panel h2{font-size:15px;margin:0 0 14px}.muted{color:var(--muted)}.row{display:flex;gap:9px;align-items:center}.row>*:first-child{flex:1}.input,.textarea,.select{width:100%;border:1px solid var(--line);background:#090e1c;color:white;border-radius:12px;padding:12px;outline:none}.textarea{min-height:110px;resize:vertical}.input:focus,.textarea:focus,.select:focus{border-color:#6550b5;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
+.chat{height:calc(100vh - 180px);min-height:500px;display:flex;flex-direction:column}.messages{flex:1;overflow:auto;padding:4px 2px 18px}.msg{display:flex;gap:10px;margin:15px 0;max-width:900px}.msg.user{margin-left:auto;flex-direction:row-reverse}.avatar{width:32px;height:32px;flex:none;border-radius:10px;display:grid;place-items:center;background:#151c30;border:1px solid var(--line);font-size:11px;font-weight:800}.msg.user .avatar{background:linear-gradient(135deg,#334155,#1e293b)}.bubble{padding:12px 14px;border-radius:15px;background:#101629;border:1px solid var(--line);line-height:1.65;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.msg.user .bubble{background:linear-gradient(135deg,rgba(139,92,246,.24),rgba(99,102,241,.12))}.composer{display:flex;gap:9px;border-top:1px solid var(--line);padding-top:13px}.composer input{flex:1}.typing{color:#9da8c2}.typing:after{content:"";animation:dots 1.2s infinite}@keyframes dots{0%{content:"."}33%{content:".."}66%{content:"..."}}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field label{display:block;color:#aab4c9;font-size:11px;margin:0 0 7px}.full{grid-column:1/-1}.result{margin-top:15px;white-space:pre-wrap;line-height:1.65;color:#dbe2f2;font-size:13px;max-height:450px;overflow:auto}.list{display:flex;flex-direction:column;gap:9px}.item{border:1px solid var(--line);background:#0b1020;border-radius:13px;padding:12px;display:flex;justify-content:space-between;gap:12px}.item b{font-size:13px}.item small{color:var(--muted)}
+.mode-grid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}.mode-card{cursor:pointer;border:1px solid var(--line);border-radius:16px;padding:18px;background:#0d1221;transition:.18s}.mode-card:hover,.mode-card.selected{border-color:#7659cf;background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(13,18,33,.9))}.mode-card b{display:block;margin:8px 0 5px}.mode-card span{color:var(--muted);font-size:12px;line-height:1.5}
+.image-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:15px}.image-card{border:1px solid var(--line);background:#0d1221;border-radius:14px;overflow:hidden}.image-card img{width:100%;display:block;aspect-ratio:1;object-fit:cover}.image-card div{padding:10px;font-size:11px;color:var(--muted)}
+.toast{position:fixed;right:20px;bottom:20px;z-index:100;padding:12px 15px;border-radius:12px;background:#11182a;border:1px solid #303a55;box-shadow:var(--shadow);font-size:13px;display:none}.toast.show{display:block;animation:fade .2s}
+.empty{padding:35px;text-align:center;color:var(--muted);border:1px dashed #303951;border-radius:15px}
+@media(max-width:900px){.sidebar{position:fixed;z-index:50;left:-280px;transition:.22s}.sidebar.open{left:0}.hamb{display:block}.content{padding:20px}.workspace{grid-template-columns:1fr}}
+@media(max-width:600px){.topbar{padding:0 15px}.content{padding:14px}.formgrid{grid-template-columns:1fr}.hero{padding:23px}.top-actions .secondary{display:none}.chat{height:calc(100vh - 145px)}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">U8</div><div><b>Ultim8 AI</b><small>Your AI workspace</small></div></div>
+  <div class="section-title">Workspace</div>
+  <nav class="nav">
+    <button data-page="home" class="active"><span class="ico">⌂</span>Home</button>
+    <button data-page="chat"><span class="ico">✦</span>Chat</button>
+    <button data-page="create"><span class="ico">✚</span>Create</button>
+    <button data-page="images"><span class="ico">▧</span>Images</button>
+    <button data-page="music"><span class="ico">♫</span>Music</button>
+    <button data-page="finance"><span class="ico">◈</span>Finance Diary</button>
+    <button data-page="library"><span class="ico">▤</span>Library</button>
+  </nav>
+  <div class="section-title">Organize</div>
+  <nav class="nav">
+    <button data-page="schedule"><span class="ico">◷</span>Schedule</button>
+    <button data-page="projects"><span class="ico">▣</span>Projects</button>
+  </nav>
+  <div class="section-title">Power</div>
+  <nav class="nav">
+    <button data-page="plugins"><span class="ico">⊞</span>Plugins</button>
+    <button data-page="codex"><span class="ico">⌘</span>Codex</button>
+    <button data-page="personalizations"><span class="ico">◉</span>Personalizations</button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">Checking AI...</span></div>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="top-left">
+    <button class="icon-btn hamb" onclick="toggleSidebar()">☰</button>
+    <div class="page-title" id="pageTitle">Home</div>
+    <button class="mode" id="modeButton" onclick="showPage('personalizations')">General · change</button>
+  </div>
+  <div class="top-actions">
+    <button class="secondary" onclick="testAI()">⚡ Test AI</button>
+    <button class="secondary" onclick="openSearch()">Search</button>
+  </div>
+</header>
+
+<section class="content">
+
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="muted">WELCOME TO YOUR WORKSPACE</div>
+    <h1>Build. Think. <span class="gradient">Create.</span></h1>
+    <p>Ultim8 AI brings chat, creation, coding, images, music ideas, projects, scheduling and your personal workspace together in one place.</p>
+    <div class="hero-actions">
+      <button class="primary" onclick="showPage('chat')">Start chatting →</button>
+      <button class="secondary" onclick="showPage('create')">Create something</button>
+      <button class="secondary" onclick="showPage('images')">Generate an image</button>
+    </div>
+  </div>
+  <div class="grid cards">
+    <div class="card click" onclick="showPage('chat')"><div class="bigicon">✦</div><h3>Ask Ultim8</h3><p>Get real AI answers and continue conversations.</p></div>
+    <div class="card click" onclick="showPage('create')"><div class="bigicon">✚</div><h3>Create</h3><p>Turn ideas into plans, copy, apps and concepts.</p></div>
+    <div class="card click" onclick="showPage('codex')"><div class="bigicon">⌘</div><h3>Codex</h3><p>Generate, explain and debug code with AI.</p></div>
+    <div class="card click" onclick="showPage('projects')"><div class="bigicon">▣</div><h3>Projects</h3><p>Keep your ideas organized in one workspace.</p></div>
+  </div>
+</div>
+
+<div class="page" id="page-chat">
+  <div class="panel chat">
+    <div class="messages" id="messages">
+      <div class="msg"><div class="avatar">U8</div><div class="bubble">Hey! I'm Ultim8 AI. Ask me anything, or tell me what you want to build.</div></div>
+    </div>
+    <div class="composer">
+      <input class="input" id="chatInput" placeholder="Message Ultim8..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}">
+      <button class="primary" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-create">
+  <div class="panel">
+    <h2>Create with Ultim8</h2>
+    <div class="formgrid">
+      <div class="field"><label>WHAT ARE YOU CREATING?</label><select class="select" id="createType"><option>App</option><option>Website</option><option>Game</option><option>Business idea</option><option>Document</option><option>Study plan</option><option>Project plan</option></select></div>
+      <div class="field"><label>STYLE / GOAL</label><input class="input" id="createStyle" placeholder="Modern, simple, fun..."></div>
+      <div class="field full"><label>DESCRIBE IT</label><textarea class="textarea" id="createPrompt" placeholder="Tell Ultim8 what you want to create..."></textarea></div>
+      <div class="full"><button class="primary" onclick="createThing()">✨ Generate with AI</button></div>
+    </div>
+    <div class="result" id="createResult"></div>
+  </div>
+</div>
+
+<div class="page" id="page-images">
+  <div class="panel">
+    <h2>Image Studio</h2>
+    <p class="muted">Describe an image and Ultim8 will send the prompt to the connected image model.</p>
+    <div class="formgrid">
+      <div class="field full"><label>PROMPT</label><textarea class="textarea" id="imagePrompt" placeholder="A futuristic city at night, cinematic lighting..."></textarea></div>
+      <div class="field"><label>SIZE</label><select class="select" id="imageSize"><option value="1024x1024">Square</option><option value="1536x1024">Landscape</option><option value="1024x1536">Portrait</option></select></div>
+      <div class="field"><label>STYLE</label><input class="input" id="imageStyle" placeholder="Cinematic, illustrated, realistic..."></div>
+      <div class="full"><button class="primary" onclick="generateImage()">🎨 Generate image</button></div>
+    </div>
+    <div id="imageStatus" class="result"></div>
+    <div class="image-grid" id="imageGallery"></div>
+  </div>
+</div>
+
+<div class="page" id="page-music">
+  <div class="panel">
+    <h2>Music Lab</h2>
+    <div class="formgrid">
+      <div class="field"><label>GENRE</label><input class="input" id="musicGenre" placeholder="Pop, Afrobeats, electronic..."></div>
+      <div class="field"><label>MOOD</label><input class="input" id="musicMood" placeholder="Energetic, calm, mysterious..."></div>
+      <div class="field full"><label>IDEA</label><textarea class="textarea" id="musicPrompt" placeholder="What should the track feel like?"></textarea></div>
+      <div class="full"><button class="primary" onclick="generateMusic()">♫ Generate music concept</button></div>
+    </div>
+    <div class="result" id="musicResult"></div>
+  </div>
+</div>
+
+<div class="page" id="page-finance">
+  <div class="workspace">
+    <div class="panel"><h2>Add expense</h2><div class="formgrid">
+      <div class="field"><label>ITEM</label><input class="input" id="expenseName" placeholder="Transport"></div>
+      <div class="field"><label>AMOUNT</label><input class="input" id="expenseAmount" type="number" min="0" step="0.01" placeholder="0"></div>
+      <div class="field full"><button class="primary" onclick="addExpense()">Add expense</button></div>
+    </div></div>
+    <div class="panel"><h2>Total</h2><div style="font-size:30px;font-weight:800" id="expenseTotal">0</div><div class="muted">Saved on this device</div></div>
+  </div>
+  <div class="panel" style="margin-top:16px"><h2>Recent expenses</h2><div class="list" id="expenseList"></div></div>
+</div>
+
+<div class="page" id="page-library">
+  <div class="panel"><h2>Library</h2><p class="muted">Your saved AI outputs appear here.</p><div class="list" id="libraryList"></div></div>
+</div>
+
+<div class="page" id="page-schedule">
+  <div class="panel"><h2>Schedule</h2><div class="formgrid">
+    <div class="field"><label>EVENT</label><input class="input" id="eventName" placeholder="Study session"></div>
+    <div class="field"><label>WHEN</label><input class="input" id="eventDate" type="datetime-local"></div>
+    <div class="field full"><button class="primary" onclick="addEvent()">Add event</button></div>
+  </div></div>
+  <div class="panel" style="margin-top:16px"><h2>Upcoming</h2><div class="list" id="eventList"></div></div>
+</div>
+
+<div class="page" id="page-projects">
+  <div class="panel"><h2>Projects</h2><div class="formgrid">
+    <div class="field"><label>PROJECT NAME</label><input class="input" id="projectName" placeholder="Ultim8 website"></div>
+    <div class="field"><label>STATUS</label><select class="select" id="projectStatus"><option>Planning</option><option>In progress</option><option>Complete</option></select></div>
+    <div class="field full"><button class="primary" onclick="addProject()">Create project</button></div>
+  </div></div>
+  <div class="panel" style="margin-top:16px"><h2>Your projects</h2><div class="list" id="projectList"></div></div>
+</div>
+
+<div class="page" id="page-plugins">
+  <div class="panel"><h2>Plugins</h2><p class="muted">Plugin switches are stored locally. Real external plugins can be connected later through the backend.</p><div class="grid cards" id="pluginGrid"></div></div>
+</div>
+
+<div class="page" id="page-codex">
+  <div class="panel"><h2>Codex</h2><div class="formgrid">
+    <div class="field"><label>LANGUAGE</label><select class="select" id="codeLanguage"><option>JavaScript</option><option>Python</option><option>HTML/CSS</option><option>TypeScript</option><option>Java</option><option>C++</option></select></div>
+    <div class="field"><label>TASK</label><input class="input" id="codeTask" placeholder="Build a calculator..."></div>
+    <div class="field full"><label>DETAILS</label><textarea class="textarea" id="codeDetails" placeholder="Explain what the program should do."></textarea></div>
+    <div class="full"><button class="primary" onclick="generateCode()">⌘ Generate code</button></div>
+  </div><div class="result" id="codeResult"></div></div>
+</div>
+
+<div class="page" id="page-personalizations">
+  <div class="panel"><h2>Personalizations</h2><p class="muted">General is the normal default mode. Choose a focused mode below when you want Ultim8 to adapt its approach.</p>
+  <div class="grid mode-grid" id="modeGrid" style="margin-top:16px"></div></div>
+</div>
+
+</section>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const modes=[
+  ["Business","📈","Strategy, ideas, decisions and professional communication."],
+  ["Work","💼","Focused, organized and practical work assistance."],
+  ["Study","📚","Clear explanations, practice and learning support."],
+  ["Creative","🎨","Brainstorming, storytelling and original ideas."],
+  ["Fun","🎮","Playful ideas, games and light conversations."],
+  ["Programming","⌘","Technical thinking, coding and debugging."],
+  ["Planning","🗓️","Break goals into steps, timelines and checklists."],
+  ["Custom","⚙️","A flexible mode for your own preferred approach."]
+];
+const pageNames={home:"Home",chat:"Chat",create:"Create",images:"Images",music:"Music","finance":"Finance Diary",library:"Library",schedule:"Schedule",projects:"Projects",plugins:"Plugins",codex:"Codex",personalizations:"Personalizations"};
+let chatHistory=[];
+
+function showPage(name){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const page=document.getElementById("page-"+name);
+  if(page) page.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===name));
+  document.getElementById("pageTitle").textContent=pageNames[name]||name;
+  document.getElementById("sidebar").classList.remove("open");
+  if(name==="finance")renderExpenses();
+  if(name==="schedule")renderEvents();
+  if(name==="projects")renderProjects();
+  if(name==="library")renderLibrary();
+  if(name==="personalizations")renderModes();
+}
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+function toast(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2600)}
+function mode(){return localStorage.getItem("ultim8Mode")||"General"}
+function selectMode(m){localStorage.setItem("ultim8Mode",m);document.getElementById("modeButton").textContent=m+" · change";renderModes();toast("Personalization changed to "+m)}
+function renderModes(){const g=document.getElementById("modeGrid");if(!g)return;g.innerHTML=modes.map(m=>`<div class="mode-card ${mode()===m[0]?"selected":""}" onclick="selectMode('${m[0]}')"><div class="bigicon">${m[1]}</div><b>${m[0]}</b><span>${m[2]}</span></div>`).join("")}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+function addMessage(role,text,typing=false){
+  const box=document.getElementById("messages");const el=document.createElement("div");el.className="msg "+role;
+  el.innerHTML=`<div class="avatar">${role==="user"?"YOU":"U8"}</div><div class="bubble ${typing?"typing":""}"></div>`;
+  el.querySelector(".bubble").textContent=text;box.appendChild(el);box.scrollTop=box.scrollHeight;return el;
+}
+async function sendChat(){
+  const input=document.getElementById("chatInput"), text=input.value.trim();if(!text)return;
+  input.value="";addMessage("user",text);chatHistory.push({role:"user",content:text});
+  const typing=addMessage("assistant","Thinking...",true);
+  try{
+    const r=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:text,history:chatHistory.slice(-20),mode:mode(),task:"chat"})});
+    const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||"AI request failed");
+    typing.remove();addMessage("assistant",d.output);chatHistory.push({role:"assistant",content:d.output});saveLibrary("Chat",text,d.output);
+  }catch(e){typing.remove();addMessage("assistant","I couldn't reach the AI backend. Make sure Ultim8 is running with the server and API key configured.");toast(e.message)}
+}
+async function aiTask(task,message,extra={}){
+  const r=await fetch("/api/ai",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task,message,mode:mode(),...extra})});
+  const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||"AI request failed");return d.output;
+}
+async function createThing(){
+  const type=document.getElementById("createType").value, style=document.getElementById("createStyle").value, p=document.getElementById("createPrompt").value.trim(), out=document.getElementById("createResult");
+  if(!p)return toast("Describe what you want to create first.");
+  out.textContent="Ultim8 is creating...";try{const x=await aiTask("create",`Create a ${type}. Style/goal: ${style||"not specified"}. User idea: ${p}`);out.textContent=x;saveLibrary("Create: "+type,p,x)}catch(e){out.textContent="";toast(e.message)}
+}
+async function generateMusic(){
+  const g=document.getElementById("musicGenre").value,m=document.getElementById("musicMood").value,p=document.getElementById("musicPrompt").value.trim(),out=document.getElementById("musicResult");
+  if(!p)return toast("Describe your music idea first.");out.textContent="Generating concept...";
+  try{const x=await aiTask("music",`Genre: ${g||"open"}. Mood: ${m||"open"}. Idea: ${p}`);out.textContent=x;saveLibrary("Music concept",p,x)}catch(e){out.textContent="";toast(e.message)}
+}
+async function generateCode(){
+  const lang=document.getElementById("codeLanguage").value,t=document.getElementById("codeTask").value,d=document.getElementById("codeDetails").value,out=document.getElementById("codeResult");
+  if(!t&&!d)return toast("Tell Codex what to build.");out.textContent="Codex is working...";
+  try{const x=await aiTask("code",`Language: ${lang}\nTask: ${t}\nDetails: ${d}`);out.textContent=x;saveLibrary("Codex",t,x)}catch(e){out.textContent="";toast(e.message)}
+}
+async function generateImage(){
+  const p=document.getElementById("imagePrompt").value.trim(),style=document.getElementById("imageStyle").value,size=document.getElementById("imageSize").value,status=document.getElementById("imageStatus");
+  if(!p)return toast("Describe the image first.");status.textContent="Generating image...";
+  try{const r=await fetch("/api/image",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:p,style,size})});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||"Image generation failed");status.textContent="Image generated.";const card=document.createElement("div");card.className="image-card";card.innerHTML=`<img src="${d.image}" alt="Generated image"><div>${escapeHtml(p)}</div>`;document.getElementById("imageGallery").prepend(card);saveLibrary("Image prompt",p,"Generated image");}catch(e){status.textContent="";toast(e.message)}
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function getJSON(k){try{return JSON.parse(localStorage.getItem(k)||"[]")}catch{return[]}}
+function setJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function saveLibrary(type,title,content){const a=getJSON("u8_library");a.unshift({id:Date.now(),type,title:String(title).slice(0,100),content:String(content),date:new Date().toLocaleString()});setJSON("u8_library",a.slice(0,100))}
+function renderLibrary(){const a=getJSON("u8_library"),el=document.getElementById("libraryList");el.innerHTML=a.length?a.map(x=>`<div class="item"><div><b>${escapeHtml(x.type)} · ${escapeHtml(x.title)}</b><small style="display:block;margin-top:5px">${escapeHtml(x.date)}</small></div><button class="secondary" onclick="copyText(${JSON.stringify(x.content)})">Copy</button></div>`).join(""):`<div class="empty">Nothing saved yet. Generate something in Chat, Create, Music or Codex.</div>`}
+function copyText(x){navigator.clipboard?.writeText(x);toast("Copied")}
+function addExpense(){const n=document.getElementById("expenseName").value.trim(),a=Number(document.getElementById("expenseAmount").value);if(!n||!a)return toast("Enter an item and amount.");const x=getJSON("u8_expenses");x.unshift({n,a,date:new Date().toLocaleDateString()});setJSON("u8_expenses",x);document.getElementById("expenseName").value="";document.getElementById("expenseAmount").value="";renderExpenses()}
+function renderExpenses(){const x=getJSON("u8_expenses"),sum=x.reduce((s,v)=>s+Number(v.a),0);document.getElementById("expenseTotal").textContent=sum.toLocaleString();document.getElementById("expenseList").innerHTML=x.length?x.map(v=>`<div class="item"><div><b>${escapeHtml(v.n)}</b><small style="display:block">${v.date}</small></div><b>${Number(v.a).toLocaleString()}</b></div>`).join(""):`<div class="empty">No expenses yet.</div>`}
+function addEvent(){const n=document.getElementById("eventName").value.trim(),d=document.getElementById("eventDate").value;if(!n||!d)return toast("Enter an event and time.");const x=getJSON("u8_events");x.push({n,d});x.sort((a,b)=>a.d.localeCompare(b.d));setJSON("u8_events",x);renderEvents()}
+function renderEvents(){const x=getJSON("u8_events"),el=document.getElementById("eventList");el.innerHTML=x.length?x.map((v,i)=>`<div class="item"><div><b>${escapeHtml(v.n)}</b><small style="display:block">${new Date(v.d).toLocaleString()}</small></div><button class="danger" onclick="removeEvent(${i})">Remove</button></div>`).join(""):`<div class="empty">No scheduled events.</div>`}
+function removeEvent(i){const x=getJSON("u8_events");x.splice(i,1);setJSON("u8_events",x);renderEvents()}
+function addProject(){const n=document.getElementById("projectName").value.trim(),s=document.getElementById("projectStatus").value;if(!n)return toast("Enter a project name.");const x=getJSON("u8_projects");x.unshift({n,s,date:new Date().toLocaleDateString()});setJSON("u8_projects",x);renderProjects()}
+function renderProjects(){const x=getJSON("u8_projects"),el=document.getElementById("projectList");el.innerHTML=x.length?x.map((v,i)=>`<div class="item"><div><b>${escapeHtml(v.n)}</b><small style="display:block">${escapeHtml(v.s)} · ${v.date}</small></div><button class="danger" onclick="removeProject(${i})">Remove</button></div>`).join(""):`<div class="empty">No projects yet.</div>`}
+function removeProject(i){const x=getJSON("u8_projects");x.splice(i,1);setJSON("u8_projects",x);renderProjects()}
+const plugins=[["Web Research","Search/connect web tools later"],["Files","Work with uploaded documents"],["Calendar","Connect scheduling services later"],["Developer Tools","Developer-focused actions"],["Image Studio","Image generation endpoint"]];function renderPlugins(){document.getElementById("pluginGrid").innerHTML=plugins.map((p,i)=>`<div class="card"><div class="bigicon">⊞</div><h3>${p[0]}</h3><p>${p[1]}</p><button class="secondary" style="margin-top:12px" onclick="togglePlugin(${i})">${localStorage.getItem("plug"+i)==="on"?"Enabled":"Enable"}</button></div>`).join("")}
+function togglePlugin(i){localStorage.setItem("plug"+i,localStorage.getItem("plug"+i)==="on"?"off":"on");renderPlugins();toast("Plugin setting updated")}
+async function testAI(){try{const r=await fetch("/api/health");const d=await r.json();if(d.ok){setOnline(true);toast("Ultim8 AI backend is online.")}}catch{setOnline(false);toast("Backend is offline. Start the server.")}}
+function setOnline(ok){document.getElementById("statusDot").classList.toggle("online",ok);document.getElementById("statusText").textContent=ok?"AI backend online":"AI backend offline"}
+function openSearch(){const q=prompt("Search Ultim8 pages and tools:");if(!q)return;const found=Object.entries(pageNames).find(([k,v])=>v.toLowerCase().includes(q.toLowerCase()));if(found)showPage(found[0]);else toast("No matching section found.")}
+async function boot(){document.getElementById("modeButton").textContent=mode()+" · change";renderExpenses();renderEvents();renderProjects();renderLibrary();renderPlugins();renderModes();try{const r=await fetch("/api/health");setOnline(r.ok)}catch{setOnline(false)}}
+boot();
+</script>
+</body>
+</html>
