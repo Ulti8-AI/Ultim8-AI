@@ -24,7 +24,9 @@ if (!HF_TOKEN) {
   process.exit(1);
 }
 
-
+const MODEL =
+  process.env.TEXT_MODEL ||
+  "Qwen/Qwen3-4B-Instruct-2507";
 
 const HF_URL =
   "https://router.huggingface.co/v1/chat/completions";
